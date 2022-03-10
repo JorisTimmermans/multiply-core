@@ -160,15 +160,10 @@ class S2Observations(ProductObservations):
         return data_set.ReadAsArray()
 
     def _get_raw_data_set_from_name(self, band_name: str) -> Dataset:
-        #import pdb
-        #pdb_set_trace()
         if len(self._file_refs) > 1:
             data_set_base_url = self._file_refs[0].url
             relative_path = data_validation.get_relative_path(data_set_base_url, self._data_type)
             vrt_file_name = data_set_base_url.replace(relative_path, f"/{band_name.split('.')[0]}.vrt")
-            if relative_path=='':
-                vrt_file_name = '/'.join(data_set_base_url.split('/')[:-1]) + '/'+ band_name.split('.')[0]+'.vrt'
-
             if not os.path.exists(vrt_file_name):
                 data_set_base_urls = []
                 for file_ref in self._file_refs:
@@ -178,6 +173,8 @@ class S2Observations(ProductObservations):
                 if len(data_set_base_urls) == 0:
                     raise ValueError(f'Could not find band {band_name}')
                 vrt_data_set = BuildVRT(vrt_file_name, data_set_base_urls)
+                import pdb
+                pdb.set_trace()
                 vrt_data_set.FlushCache()
             return Open(vrt_file_name)
         else:
