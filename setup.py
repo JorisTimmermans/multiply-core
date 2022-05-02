@@ -24,7 +24,7 @@ setup(name='multiply-core',
       version=__version__,
       description='MULTIPLY Core',
       author='MULTIPLY Team',
-      packages=['multiply_core', 'multiply_core.util', 'multiply_core.observations', 'multiply_core.variables'],
+      packages=['multiply_core', 'multiply_core.util', 'multiply_core.observations', 'multiply_core.variables', 'multiply_core.models'],
       entry_points={
           'observations_creators': [
               's2_observation_creator = multiply_core.observations:s2_observations.S2ObservationsCreator',
