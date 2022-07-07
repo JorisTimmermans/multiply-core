@@ -1,6 +1,5 @@
-import gdal
 import numpy as np
-import osr
+from osgeo import gdal, osr, __version__ as gdalversion
 import pyproj
 from functools import partial
 from shapely.geometry import Polygon
@@ -50,8 +49,12 @@ def transform_coordinates(source: osr.SpatialReference, target: osr.SpatialRefer
     coordinate_transformation = osr.CoordinateTransformation(source, target)
     for i in range(num_coords):
         target_coord = coordinate_transformation.TransformPoint(coords[i * 2], coords[i * 2 + 1])
-        target_coords.append(target_coord[0])
-        target_coords.append(target_coord[1])
+        if int(gdalversion) >= 3:
+            target_coords.append(target_coord[1])
+            target_coords.append(target_coord[0])
+        else:
+            target_coords.append(target_coord[0])
+            target_coords.append(target_coord[1])
     return target_coords
 
 
