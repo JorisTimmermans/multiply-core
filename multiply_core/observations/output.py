@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-import gdal
+from osgeo import gdal
 import logging
 import numpy as np
 import os
