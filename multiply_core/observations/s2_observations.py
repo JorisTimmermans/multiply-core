@@ -1,4 +1,4 @@
-from gdal import BuildVRT, Dataset, Open
+from osgeo.gdal import BuildVRT, Dataset, Open
 import _pickle as cPickle
 import glob
 import logging
