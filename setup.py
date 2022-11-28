@@ -21,10 +21,10 @@ with open('multiply_core/version.py') as f:
     exec(f.read())
 
 setup(name='multiply-core',
+      packages=setuptools.find_packages(),
       version=__version__,
       description='MULTIPLY Core',
       author='MULTIPLY Team',
-      packages=['multiply_core', 'multiply_core.util', 'multiply_core.observations', 'multiply_core.variables', 'multiply_core.models'],
       entry_points={
           'observations_creators': [
               's2_observation_creator = multiply_core.observations:s2_observations.S2ObservationsCreator',
