@@ -14,8 +14,6 @@ else:
     #     'shapely',
     #     'scipy',
     #     'pyyaml']
-    requirements = ['setuptools'
-                   ]
 
 __version__ = None
 with open('multiply_core/version.py') as f:
