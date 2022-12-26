@@ -21,7 +21,7 @@ with open('multiply_core/version.py') as f:
     exec(f.read())
 
 setup(name='multiply-core',
-      packages=setuptools.find_packages(),
+      packages=find_packages(),
       version=__version__,
       description='MULTIPLY Core',
       author='MULTIPLY Team',
