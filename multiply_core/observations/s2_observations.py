@@ -226,7 +226,7 @@ class S2Observations(ProductObservations):
             band = BAND_NAMES.index(band)
         self._no_data_values[band] = no_data_value
 
-    def read_granule(self) -> (List[np.array], np.array, np.float, np.float, np.float, List[np.array]):
+    def read_granule(self) -> (List[np.array], np.array, float, float, float, List[np.array]):
         band_map = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B8A', 'B09', 'B10', 'B11', 'B12']
         cloud_mask = self._get_raw_band_data_from_name(CLOUD_MASK_NAME)
         mask = cloud_mask <= BAND_PROB_THRESHOLD
