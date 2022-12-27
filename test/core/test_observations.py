@@ -33,7 +33,7 @@ def test_create_observations():
 
     class DummyObservations(ProductObservations):
 
-        def read_granule(self) -> (List[np.array], np.array, np.float, np.float, np.float, List[np.array]):
+        def read_granule(self) -> (List[np.array], np.array, float, float, float, List[np.array]):
             return [np.array([0.5])], np.array([0.4]), 0.3, 0.2, 0.1, [np.array([0.6])]
 
         def get_band_data_by_name(self, band_name: str, retrieve_uncertainty: bool = True) -> ObservationData:

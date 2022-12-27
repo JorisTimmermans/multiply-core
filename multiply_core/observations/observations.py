@@ -97,7 +97,7 @@ class ProductObservations(metaclass=ABCMeta):
         """Sets a new no data value to a band."""
 
     @abstractmethod
-    def read_granule(self) -> (List[np.array], np.array, np.float, np.float, np.float, List[np.array]):
+    def read_granule(self) -> (List[np.array], np.array, float, float, float, List[np.array]):
         """Reads """
 
 
@@ -179,7 +179,7 @@ class ObservationsWrapper(object):
         """
         return self._observations[date].data_type
 
-    def read_granule(self, date: datetime) -> (List[np.array], np.array, np.float, np.float, np.float, List[np.array]):
+    def read_granule(self, date: datetime) -> (List[np.array], np.array, float, float, float, List[np.array]):
         if date not in self.dates:
             LOG.info(f"{str(date):s} not available!")
             return None, None, None, None, None, None
