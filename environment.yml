@@ -1,61 +1,29 @@
 name: multiply-platform
-
 channels:
   - conda-forge
   - defaults
 
 dependencies:
-  - python>=3.9
-  #
-  # runtime dependencies
-  #
-  - astor
-  - beautifulsoup4
-  - setuptools
-#  - colorama
+  - python>=3.8
+#  - pdal
+#  - python-pdal
   - gdal
-  - pdal
-  - python-pdal
-#  - geojson
-#  - freetype
-#  - h5py
-#  - html5lib
-#  - jupyter
-#  - lightgbm
-#  - lxml
-#  - matplotlib
-#  - netcdf4
-#  - numba
-  - numpy
-#  - pandas
-#  - psutil
-  - pyproj
-  - pyyaml
-#  - recommonmark
-#  - requests
-  - scipy
-#  - scikit-image
-#  - scikit-learn
-  - shapely
-#  - six
-#  - tensorflow
-#  - termcolor
-#  - typing
-#  - webencodings
-#  - xarray
-#  # Server
-#  - click
-#  - inflection
-#  # UI
-#  - ipyleaflet
-#  - ipywidgets
-#  - jupyterlab
-#  - nodejs
-#  - tornado
-#  # Docs
-  - mock
-#  - sphinx
-#  - sphinxcontrib-bibtex
-#    # Testing
-  - pytest
-  - pytest-cov
+#  - numpy
+#  - scipy
+#  - gcc=12.1.0
+#  - cxx-compiler
+#  - libgcc=5.2.0
+#  - shapely  # needed to install the correct version of geos
+#  - asyncssh
+#  - dask-core
+#  - dask
+#  - fire
+#  - lazrs-python
+#  - laspy
+#  - plyfile
+#  - webdavclient3
+#  - pyshp
+#  - shapely
+#  - pip
+#  - pip:
+#      - .
