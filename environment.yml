@@ -5,25 +5,7 @@ channels:
 
 dependencies:
   - python>=3.8
-#  - pdal
-#  - python-pdal
   - gdal
-#  - numpy
-#  - scipy
-#  - gcc=12.1.0
-#  - cxx-compiler
-#  - libgcc=5.2.0
-#  - shapely  # needed to install the correct version of geos
-#  - asyncssh
-#  - dask-core
-#  - dask
-#  - fire
-#  - lazrs-python
-#  - laspy
-#  - plyfile
-#  - webdavclient3
-#  - pyshp
-#  - shapely
-#  - pip
-#  - pip:
-#      - .
+  - pyproj
+  - pyyaml
+  - numpy
