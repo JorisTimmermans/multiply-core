@@ -11,8 +11,11 @@ dependencies:
   #
   - astor
   - beautifulsoup4
+  - setuptools
 #  - colorama
-#  - gdal
+  - gdal
+  - pdal
+  - python-pdal
 #  - geojson
 #  - freetype
 #  - h5py
@@ -23,18 +26,17 @@ dependencies:
 #  - matplotlib
 #  - netcdf4
 #  - numba
-#  - numpy
+  - numpy
 #  - pandas
 #  - psutil
-#  - pyproj
-#  - pyyaml
+  - pyproj
+  - pyyaml
 #  - recommonmark
 #  - requests
-#  - scipy
+  - scipy
 #  - scikit-image
 #  - scikit-learn
-#  - setuptools
-#  - shapely
+  - shapely
 #  - six
 #  - tensorflow
 #  - termcolor
@@ -51,9 +53,9 @@ dependencies:
 #  - nodejs
 #  - tornado
 #  # Docs
-#  - mock
+  - mock
 #  - sphinx
 #  - sphinxcontrib-bibtex
 #    # Testing
-#  - pytest
-#  - pytest-cov
+  - pytest
+  - pytest-cov
