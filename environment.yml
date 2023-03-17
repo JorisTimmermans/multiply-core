@@ -9,3 +9,11 @@ dependencies:
   - pyproj
   - pyyaml
   - numpy
+  - scipy
+  - setuptools
+  - shapely
+  - pip
+  - pip:
+      - -r requirements.txt
+      - .
+
