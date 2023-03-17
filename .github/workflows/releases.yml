@@ -1,7 +1,6 @@
 name: Releases
 
 on:
-  push:
   schedule:
   - cron: '0 0 3 * *'
 
@@ -47,4 +46,4 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "multiply_core-0.6.1.dev0-py3-none-any.whl"
-        tag: ${{wheel.outputs.version}}
+        tag: ${{ steps.wheel.outputs.version }}"
