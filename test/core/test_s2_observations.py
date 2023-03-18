@@ -1,23 +1,40 @@
+import os
+
 try:
     import gdal
     import osr
 except ImportError:
     from osgeo import gdal, osr
 
-
 from multiply_core.util import Reprojection, FileRef
 from multiply_core.observations import S2Observations, S2ObservationsCreator, extract_angles_from_metadata_file, \
     extract_tile_id
 
-S2_BASE_FILE = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
-S2_AWS_BASE_FILE = './test/test_data/product_in_aws_format/'
-S2_METADATA_FILE = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac/MTD_TL.xml'
-S2_AWS_METADATA_FILE = './test/test_data/product_in_aws_format/metadata.xml'
-FAULTY_BASE_FILE = './test/test_data/faulty_product/'
-METADATA_FILE_WITH_FAULTY_TILE_ID = './test/test_data/faulty_product/metadata.xml'
-MISSING_TILE_ID_BASE_FILE = './test/test_data/product_without_tile_id/'
-METADATA_FILE_WITHOUT_TILE_ID = './test/test_data/product_without_tile_id/metadata.xml'
-EMULATOR_FOLDER = './test/test_data/emulator_folder/'
+
+if os.path.exists('test'):
+    base_path = 'test/test_data/'
+elif os.path.exists('util'):
+    base_path = '../test/test_data/'
+
+
+S2_BASE_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
+assert os.path.exists(S2_BASE_FILE)
+
+S2_AWS_BASE_FILE = base_path + 'product_in_aws_format/'
+assert os.path.exists(S2_AWS_BASE_FILE)
+S2_METADATA_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac/MTD_TL.xml'
+assert os.path.exists(S2_METADATA_FILE)
+S2_AWS_METADATA_FILE = base_path + 'product_in_aws_format/metadata.xml'
+assert os.path.exists(S2_AWS_METADATA_FILE)
+FAULTY_BASE_FILE = base_path + 'faulty_product/'
+assert os.path.exists(FAULTY_BASE_FILE)
+METADATA_FILE_WITH_FAULTY_TILE_ID = base_path + 'faulty_product/metadata.xml'
+assert os.path.exists(METADATA_FILE_WITH_FAULTY_TILE_ID)
+MISSING_TILE_ID_BASE_FILE = base_path + 'product_without_tile_id/'
+assert os.path.exists(MISSING_TILE_ID_BASE_FILE)
+METADATA_FILE_WITHOUT_TILE_ID = base_path + 'product_without_tile_id/metadata.xml'
+assert os.path.exists(METADATA_FILE_WITHOUT_TILE_ID)
+EMULATOR_FOLDER = base_path + 'emulator_folder/'
 EPSG_32232_WKT = 'PROJCS["WGS 72 / UTM zone 32N",GEOGCS["WGS 72",DATUM["World Geodetic System 1972",' \
                  'SPHEROID["WGS 72",6378135.0,298.26,AUTHORITY["EPSG","7043"]],' \
                  'TOWGS84[0.0,0.0,4.5,0.0,0.0,0.554,0.219],AUTHORITY["EPSG","6322"]],PRIMEM["Greenwich",0.0,' \
@@ -41,14 +58,14 @@ def test_bands_per_observation():
 
 def test_aws_s2_get_band_data():
     s2_observations = _get_observations(S2_AWS_BASE_FILE)
-    # s2_observation_data = s2_observations.get_band_data(3)
-    # _assert_aws_s2_observation_data(s2_observation_data)
+    s2_observation_data = s2_observations.get_band_data(3)
+    _assert_aws_s2_observation_data(s2_observation_data)
 
 
 def test_s2_get_band_data():
     s2_observations = _get_observations(S2_BASE_FILE)
-    # s2_observation_data = s2_observations.get_band_data(3)
-    # _assert_s2_observation_data(s2_observation_data)
+    s2_observation_data = s2_observations.get_band_data(3)
+    _assert_s2_observation_data(s2_observation_data)
 
 
 def test_extract_angles_from_metadata_file():
@@ -109,20 +126,20 @@ def test_s2_bands_per_observation():
 
 def test_aws_s2_get_band_data_by_name():
     s2_observations = _get_observations(S2_AWS_BASE_FILE)
-    # s2_observation_data = s2_observations.get_band_data_by_name('B05_sur.tif')
-    # _assert_aws_s2_observation_data(s2_observation_data)
+    s2_observation_data = s2_observations.get_band_data_by_name('B05_sur.tif')
+    _assert_aws_s2_observation_data(s2_observation_data)
 
 
 def test_s2_get_band_data_by_name():
     s2_observations = _get_observations(S2_AWS_BASE_FILE)
-    # s2_observation_data = s2_observations.get_band_data_by_name('B05_sur.tif')
-    # _assert_s2_observation_data(s2_observation_data)
+    s2_observation_data = s2_observations.get_band_data_by_name('B05_sur.tif')
+    _assert_s2_observation_data(s2_observation_data)
 
 
 def test_s2_get_band_data_by_name_full():
     s2_observations = _get_observations(S2_BASE_FILE)
-    # s2_observation_data = s2_observations.get_band_data_by_name('T30SWJ_20170605T105031_B05_sur.tif')
-    # _assert_s2_observation_data(s2_observation_data)
+    s2_observation_data = s2_observations.get_band_data_by_name('T30SWJ_20170605T105031_B05_sur.tif')
+    _assert_s2_observation_data(s2_observation_data)
 
 
 def _get_observations(url: str):

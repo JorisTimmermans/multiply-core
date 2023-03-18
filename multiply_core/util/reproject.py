@@ -2,9 +2,11 @@ import numpy as np
 
 try:
     import gdal
+    import osr
+    import osgeo
+    gdalversion = osgeo.gdal.__version__
 except ImportError:
     from osgeo import gdal, osr, __version__ as gdalversion
-
 
 import pyproj
 from functools import partial
@@ -12,6 +14,8 @@ from shapely.geometry import Polygon
 from shapely.ops import transform
 from shapely.wkt import dumps, loads
 from typing import Optional, Sequence, Tuple, Union
+
+
 
 __author__ = "José Luis Gómez-Dans (University College London)," \
              "Tonio Fincke (Brockmann Consult GmbH)"
