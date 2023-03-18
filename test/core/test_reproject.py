@@ -16,7 +16,7 @@ __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 if os.path.exists('test'):
-    base_path = 'test/test_data/'
+    base_path = 'test/test/test_data/'
 elif os.path.exists('util'):
     base_path = '../test/test_data/'
 

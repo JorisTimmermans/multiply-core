@@ -12,7 +12,7 @@ from multiply_core.observations import S2Observations, S2ObservationsCreator, ex
 
 
 if os.path.exists('test'):
-    base_path = 'test/test_data/'
+    base_path = 'test/test/test_data/'
 elif os.path.exists('util'):
     base_path = '../test/test_data/'
 

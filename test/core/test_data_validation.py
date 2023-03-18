@@ -9,8 +9,9 @@ from shapely.wkt import loads
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
+
 if os.path.exists('test'):
-    base_path = 'test/test_data/'
+    base_path = 'test/test/test_data/'
 elif os.path.exists('util'):
     base_path = '../test/test_data/'
 
