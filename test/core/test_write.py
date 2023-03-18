@@ -1,7 +1,8 @@
-import gdal
-import osr
-import multiply_core.util.reproject as reproject
-import pytest
+try:
+    import gdal
+    import osr
+except ImportError:
+    from osgeo import gdal, osr
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 

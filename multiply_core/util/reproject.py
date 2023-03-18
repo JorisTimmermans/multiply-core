@@ -1,5 +1,11 @@
 import numpy as np
-from osgeo import gdal, osr, __version__ as gdalversion
+
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal, osr, __version__ as gdalversion
+
+
 import pyproj
 from functools import partial
 from shapely.geometry import Polygon

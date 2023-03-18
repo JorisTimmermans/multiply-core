@@ -1,4 +1,8 @@
-import gdal
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal
+
 from multiply_core.observations import GeoTiffWriter
 import numpy as np
 import os
@@ -33,7 +37,7 @@ def test_geotiff_writer_create():
 
 
 def test_geotiff_writer_create_invalid_num_bands():
-    with raises(ValueError, message='List with number of bands must be of same size as list of file names'):
+    with raises(ValueError) as info:
         file_names = [os.path.abspath('{}/name21.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name22.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name23.tif'.format(GEOTIFF_WRITE_FOLDER)),
@@ -52,7 +56,7 @@ def test_geotiff_writer_create_invalid_num_bands():
 
 
 def test_geotiff_writer_create_invalid_data_types():
-    with raises(ValueError, message='Data Type dgfvbgf not supported.'):
+    with raises(ValueError):
         file_names = [os.path.abspath('{}/name31.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name32.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name33.tif'.format(GEOTIFF_WRITE_FOLDER)),
@@ -70,7 +74,7 @@ def test_geotiff_writer_create_invalid_data_types():
 
 
 def test_geotiff_writer_create_invalid_number_of_data_types():
-    with raises(ValueError, message='List with data types must be of same size as list of file names'):
+    with raises(ValueError):
         file_names = [os.path.abspath('{}/name41.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name42.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name43.tif'.format(GEOTIFF_WRITE_FOLDER)),

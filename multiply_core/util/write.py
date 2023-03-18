@@ -1,4 +1,7 @@
-import gdal
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 

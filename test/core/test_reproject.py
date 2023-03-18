@@ -1,7 +1,12 @@
 from shapely.wkt import loads
 
-import gdal
-import osr
+try:
+    import gdal
+    import osr
+except ImportError:
+    from osgeo import gdal, osr
+
+
 import multiply_core.util.reproject as reproject
 import pytest
 

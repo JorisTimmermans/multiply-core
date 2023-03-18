@@ -1,4 +1,9 @@
-import osr
+try:
+    import gdal
+    import osr
+except ImportError:
+    from osgeo import gdal, osr
+
 
 from multiply_core.util import Reprojection, FileRef
 from multiply_core.observations import S2Observations, S2ObservationsCreator, extract_angles_from_metadata_file, \
