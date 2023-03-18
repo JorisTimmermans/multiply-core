@@ -2,10 +2,10 @@ import os
 
 from multiply_core.models.forward_models import _get_forward_models, _read_forward_model, _register_forward_model
 
-if os.path.exists('test'):
+if os.path.exists('setup.py'):
     base_path = 'test/test/test_data/'
-elif os.path.exists('util'):
-    base_path = '../test/test_data/'
+elif os.path.exists('test_data'):
+    base_path = 'test/test_data/'
 
 
 PATH_TO_A_FORWARD_MODEL_REGISTRY_FILE = base_path + 'a_forward_model_registry.txt'

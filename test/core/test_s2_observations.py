@@ -11,10 +11,10 @@ from multiply_core.observations import S2Observations, S2ObservationsCreator, ex
     extract_tile_id
 
 
-if os.path.exists('test'):
+if os.path.exists('setup.py'):
     base_path = 'test/test/test_data/'
-elif os.path.exists('util'):
-    base_path = '../test/test_data/'
+elif os.path.exists('test_data'):
+    base_path = 'test/test_data/'
 
 
 S2_BASE_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'

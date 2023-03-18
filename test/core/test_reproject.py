@@ -15,10 +15,10 @@ __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-if os.path.exists('test'):
+if os.path.exists('setup.py'):
     base_path = 'test/test/test_data/'
-elif os.path.exists('util'):
-    base_path = '../test/test_data/'
+elif os.path.exists('test_data'):
+    base_path = 'test/test_data/'
 
 S2_FILE = base_path + 'T32UME_20170910T104021_B10.jp2'
 assert os.path.exists(S2_FILE)

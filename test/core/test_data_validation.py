@@ -9,11 +9,10 @@ from shapely.wkt import loads
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
-
-if os.path.exists('test'):
+if os.path.exists('setup.py'):
     base_path = 'test/test/test_data/'
-elif os.path.exists('util'):
-    base_path = '../test/test_data/'
+elif os.path.exists('test_data'):
+    base_path = 'test/test_data/'
 
 VALID_AWS_S2_DATA = base_path + 's2_aws/15/F/ZX/2016/12/31/1'
 assert os.path.exists(VALID_AWS_S2_DATA)
@@ -201,6 +200,7 @@ def test_s2l2_get_relative_path():
     validator = S2L2Validator()
     assert 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac' \
            == validator.get_relative_path(VALID_S2L2_PATH)
+
 
 def test_s2l2_get_file_pattern():
     validator = S2L2Validator()
