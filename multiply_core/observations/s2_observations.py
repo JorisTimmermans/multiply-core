@@ -24,7 +24,6 @@ CLOUD_MASK_NAME = 'cloud.tif'
 SUN_ANGLES_NAME = 'SAA_SZA.tif'
 VIEW_ANGLES_NAME = 'VAA_VZA_B05.tif'
 
-
 LOG = logging.getLogger(__name__ + ".Sentinel2_Observations")
 LOG.setLevel(logging.INFO)
 if not LOG.handlers:
@@ -68,7 +67,7 @@ def extract_angles_from_metadata_file(filename: str) -> Tuple[float, float, floa
                     if r.tag == "ZENITH_ANGLE":
                         vza.append(float(r.text))
                     elif r.tag == "AZIMUTH_ANGLE":
-                            vaa.append(float(r.text))
+                        vaa.append(float(r.text))
 
     return sza, saa, float(np.mean(vza)), float(np.mean(vaa))
 
@@ -156,18 +155,18 @@ class S2Observations(ProductObservations):
     def _get_raw_band_data_from_name(self, band_name: str) -> np.array:
         data_set = self._get_raw_data_set_from_name(band_name)
         if self._reprojection is not None:
-                data_set = self._reprojection.reproject(data_set)
+            data_set = self._reprojection.reproject(data_set)
         return data_set.ReadAsArray()
 
     def _get_raw_data_set_from_name(self, band_name: str) -> Dataset:
-        #import pdb
-        #pdb_set_trace()
+        # import pdb
+        # pdb_set_trace()
         if len(self._file_refs) > 1:
             data_set_base_url = self._file_refs[0].url
             relative_path = data_validation.get_relative_path(data_set_base_url, self._data_type)
             vrt_file_name = data_set_base_url.replace(relative_path, f"/{band_name.split('.')[0]}.vrt")
-            if relative_path=='':
-                vrt_file_name = '/'.join(data_set_base_url.split('/')[:-1]) + '/'+ band_name.split('.')[0]+'.vrt'
+            if relative_path == '':
+                vrt_file_name = '/'.join(data_set_base_url.split('/')[:-1]) + '/' + band_name.split('.')[0] + '.vrt'
 
             if not os.path.exists(vrt_file_name):
                 data_set_base_urls = []
@@ -271,7 +270,7 @@ class S2ObservationsCreator(ProductObservationsCreator):
         i = 0
         while i < len(file_refs) and (data_validation.AWSS2L2Validator().is_valid(file_refs[i].url)
                                       or data_validation.S2L2Validator().is_valid(file_refs[i].url)):
-            i+=1
+            i += 1
         return i == len(file_refs)
 
     @classmethod
