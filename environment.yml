@@ -18,6 +18,7 @@ dependencies:
   - lazrs-python
   - laspy
   - plyfile
+  - types-pkg_resources
   - shapely
   - pyshp
   - pytest
