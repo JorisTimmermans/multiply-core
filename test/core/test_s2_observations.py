@@ -1,18 +1,44 @@
-import osr
+import os
+
+try:
+    import gdal
+    import osr
+except ImportError:
+    from osgeo import gdal, osr
 
 from multiply_core.util import Reprojection, FileRef
 from multiply_core.observations import S2Observations, S2ObservationsCreator, extract_angles_from_metadata_file, \
     extract_tile_id
+import urllib.request
+import zipfile
 
-S2_BASE_FILE = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
-S2_AWS_BASE_FILE = './test/test_data/product_in_aws_format/'
-S2_METADATA_FILE = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac/MTD_TL.xml'
-S2_AWS_METADATA_FILE = './test/test_data/product_in_aws_format/metadata.xml'
-FAULTY_BASE_FILE = './test/test_data/faulty_product/'
-METADATA_FILE_WITH_FAULTY_TILE_ID = './test/test_data/faulty_product/metadata.xml'
-MISSING_TILE_ID_BASE_FILE = './test/test_data/product_without_tile_id/'
-METADATA_FILE_WITHOUT_TILE_ID = './test/test_data/product_without_tile_id/metadata.xml'
-EMULATOR_FOLDER = './test/test_data/emulator_folder/'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+
+S2_BASE_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
+assert os.path.exists(S2_BASE_FILE)
+
+S2_AWS_BASE_FILE = base_path + 'product_in_aws_format/'
+assert os.path.exists(S2_AWS_BASE_FILE)
+S2_METADATA_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac/MTD_TL.xml'
+assert os.path.exists(S2_METADATA_FILE)
+S2_AWS_METADATA_FILE = base_path + 'product_in_aws_format/metadata.xml'
+assert os.path.exists(S2_AWS_METADATA_FILE)
+FAULTY_BASE_FILE = base_path + 'faulty_product/'
+assert os.path.exists(FAULTY_BASE_FILE)
+METADATA_FILE_WITH_FAULTY_TILE_ID = base_path + 'faulty_product/metadata.xml'
+assert os.path.exists(METADATA_FILE_WITH_FAULTY_TILE_ID)
+MISSING_TILE_ID_BASE_FILE = base_path + 'product_without_tile_id/'
+assert os.path.exists(MISSING_TILE_ID_BASE_FILE)
+METADATA_FILE_WITHOUT_TILE_ID = base_path + 'product_without_tile_id/metadata.xml'
+assert os.path.exists(METADATA_FILE_WITHOUT_TILE_ID)
+EMULATOR_FOLDER = base_path + 'emulator_folder/'
 EPSG_32232_WKT = 'PROJCS["WGS 72 / UTM zone 32N",GEOGCS["WGS 72",DATUM["World Geodetic System 1972",' \
                  'SPHEROID["WGS 72",6378135.0,298.26,AUTHORITY["EPSG","7043"]],' \
                  'TOWGS84[0.0,0.0,4.5,0.0,0.0,0.554,0.219],AUTHORITY["EPSG","6322"]],PRIMEM["Greenwich",0.0,' \

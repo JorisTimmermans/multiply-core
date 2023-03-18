@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-
-from setuptools import setup
+import setuptools
 import os
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
@@ -20,7 +19,7 @@ __version__ = None
 with open('multiply_core/version.py') as f:
     exec(f.read())
 
-setup(name='multiply-core',
+setup_args = dict(name='multiply-core',
       packages=setuptools.find_packages(),
       version=__version__,
       description='MULTIPLY Core',
@@ -35,3 +34,6 @@ setup(name='multiply-core',
       },
       install_requires=requirements
       )
+
+if __name__ == "__main__":
+    setuptools.setup(**setup_args)

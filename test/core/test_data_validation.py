@@ -1,3 +1,6 @@
+import os
+import urllib.request
+import zipfile
 from datetime import datetime
 from multiply_core.observations.data_validation import S2L1CValidator, AWSS2L1Validator, ModisMCD43Validator, \
     ModisMCD15A2HValidator, CamsValidator, S2AEmulatorValidator, S2BEmulatorValidator, WVEmulatorValidator, \
@@ -8,12 +11,26 @@ from shapely.wkt import loads
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
-VALID_AWS_S2_DATA = './test/test_data/s2_aws/15/F/ZX/2016/12/31/1'
-VALID_CAMS_TIFF_DATA = './test/test_data/2018_10_23/'
-VALID_S2_PATH = './test/test_data/S2A_OPER_PRD_MSIL1C_PDMC_20150714T123646_R019_V20150704T102427_20150704T102427.SAFE'
-ANOTHER_VALID_S2_PATH = './test/test_data/S2B_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300'
-VALID_S2L2_PATH = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
-ANOTHER_VALID_S2L2_PATH = './test/test_data/S2B_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300-ac'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+VALID_AWS_S2_DATA = base_path + 's2_aws/15/F/ZX/2016/12/31/1'
+assert os.path.exists(VALID_AWS_S2_DATA)
+VALID_CAMS_TIFF_DATA = base_path + '2018_10_23/'
+assert os.path.exists(VALID_CAMS_TIFF_DATA)
+VALID_S2_PATH = base_path + 'S2A_OPER_PRD_MSIL1C_PDMC_20150714T123646_R019_V20150704T102427_20150704T102427.SAFE'
+assert os.path.exists(VALID_S2_PATH)
+ANOTHER_VALID_S2_PATH = base_path + 'S2B_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300'
+assert os.path.exists(ANOTHER_VALID_S2_PATH)
+VALID_S2L2_PATH = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
+assert os.path.exists(VALID_S2L2_PATH)
+ANOTHER_VALID_S2L2_PATH = base_path + 'S2B_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300-ac'
+assert os.path.exists(ANOTHER_VALID_S2L2_PATH)
 
 
 def test_s1_slc_validator_get_relative_path():
@@ -119,7 +136,6 @@ def test_aws_s2_validator_matches_pattern():
 
 def test_aws_s2_validator_is_valid():
     validator = AWSS2L1Validator()
-
     assert validator.is_valid(VALID_AWS_S2_DATA)
 
 
@@ -139,10 +155,10 @@ def test_s2_is_valid():
     assert validator.is_valid(VALID_S2_PATH)
     assert not validator.is_valid('S2A_OPER_PRD_MSIL1C_PDMC_20150714T123646_R019_V20150704T102427_20150704T102427.SAFE')
     assert not validator.is_valid(
-        './test/test_data/S2B_OPER_PRD_MSIL1C_PDMC_20150714T123646_R019_V20150704T102427_20150704T102427.SAFE')
+        base_path + 'S2B_OPER_PRD_MSIL1C_PDMC_20150714T123646_R019_V20150704T102427_20150704T102427.SAFE')
     assert validator.is_valid(ANOTHER_VALID_S2_PATH)
     assert not validator.is_valid('S2B_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300')
-    assert not validator.is_valid('./test/test_data/S2A_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300')
+    assert not validator.is_valid(base_path + 'S2A_MSIL1C_20180819T100019_N0206_R122_T32TQR_20180819T141300')
 
 
 def test_s2_get_relative_path():
@@ -180,7 +196,7 @@ def test_s2l2_is_valid():
     assert validator.is_valid(ANOTHER_VALID_S2L2_PATH)
     assert not validator.is_valid('S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac')
     assert not validator.is_valid(
-        './test/test_data/S2B_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac')
+        base_path + 'S2B_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac')
     assert not validator.is_valid(VALID_S2_PATH)
     assert not validator.is_valid(ANOTHER_VALID_S2_PATH)
 
@@ -189,6 +205,7 @@ def test_s2l2_get_relative_path():
     validator = S2L2Validator()
     assert 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac' \
            == validator.get_relative_path(VALID_S2L2_PATH)
+
 
 def test_s2l2_get_file_pattern():
     validator = S2L2Validator()
@@ -260,7 +277,7 @@ def test_cams_tiff_is_valid():
     validator = CamsTiffValidator()
 
     assert validator.is_valid(VALID_CAMS_TIFF_DATA)
-    assert not validator.is_valid('./test/test_data/2018_10_24/')
+    assert not validator.is_valid(base_path + '2018_10_24/')
 
 
 def test_cams_tiff_validator_get_relative_path():

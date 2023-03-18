@@ -17,6 +17,7 @@ class AttributeDict(object):
     key notation (Dict["key"]). This class recursively sets Dicts to objects,
     allowing you to recurse down nested dicts (like: AttributeDict.attr.attr)
     """
+
     def __init__(self, **entries):
         self.add_entries(**entries)
 
@@ -143,7 +144,7 @@ def get_time_from_string(time_string: str, adjust_to_last_day: bool = False) -> 
     raise ValueError('Invalid date/time value: "%s"' % time_string)
 
 
-def get_time_from_year_and_day_of_year(year: int, day_of_year: int, set_to_end: bool=False):
+def get_time_from_year_and_day_of_year(year: int, day_of_year: int, set_to_end: bool = False):
     """
     :param year: The year
     :param day_of_year: The day of year. Supposed to start with 1 for January 1st.
@@ -243,7 +244,7 @@ def are_polygons_almost_equal(polygon_1: Union[str, Polygon], polygon_2: Union[s
     return reversed_polygon.almost_equals(polygon_2)
 
 
-def block_diag(matrices, format: str=None, dtype: type=None) -> scipy.sparse.coo.coo_matrix:
+def block_diag(matrices, format: str = None, dtype: type = None) -> scipy.sparse.coo_matrix:
     """
     Build a block diagonal sparse matrix from provided matrices.
     This is a faster version for equally-sized blocks. Currently, open PR on scipy's github
@@ -290,7 +291,7 @@ def block_diag(matrices, format: str=None, dtype: type=None) -> scipy.sparse.coo
            [ 0,  0,  0,  0,  9, 10],
            [ 0,  0,  0,  0, 11, 12]])
     """
-    from scipy.sparse.coo import coo_matrix
+    from scipy.sparse import coo_matrix
     from scipy.sparse import issparse
 
     num_matrices = len(matrices)
@@ -314,7 +315,6 @@ def block_diag(matrices, format: str=None, dtype: type=None) -> scipy.sparse.coo
                 data.append(mat.data)
                 row.append(mat.row + origin[0])
                 col.append(mat.col + origin[1])
-
             else:
                 data.append(mat.ravel())
                 row_, col_ = np.indices(mat.shape)
