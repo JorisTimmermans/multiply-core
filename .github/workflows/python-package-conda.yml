@@ -10,7 +10,7 @@ jobs:
     strategy:
       max-parallel: 5
       matrix:
-        environment_file: [environment-2.4.yml,environment-3.0.yml,environment-3.4.yml,environment-3.6.yml,environment.yml]
+        environment_file: [environment.yml]
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:

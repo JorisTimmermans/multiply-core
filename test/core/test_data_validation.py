@@ -1,4 +1,6 @@
 import os
+import urllib.request
+import zipfile
 from datetime import datetime
 from multiply_core.observations.data_validation import S2L1CValidator, AWSS2L1Validator, ModisMCD43Validator, \
     ModisMCD15A2HValidator, CamsValidator, S2AEmulatorValidator, S2BEmulatorValidator, WVEmulatorValidator, \
@@ -9,10 +11,13 @@ from shapely.wkt import loads
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
-if os.path.exists('setup.py'):
-    base_path = 'test/test/test_data/'
-elif os.path.exists('test_data'):
-    base_path = 'test/test_data/'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
 
 VALID_AWS_S2_DATA = base_path + 's2_aws/15/F/ZX/2016/12/31/1'
 assert os.path.exists(VALID_AWS_S2_DATA)

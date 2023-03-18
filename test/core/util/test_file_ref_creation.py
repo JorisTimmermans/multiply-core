@@ -1,8 +1,21 @@
+import os
+
 from multiply_core.util.file_ref_creation import FileRefCreation, S2L2FileRefCreator, VariableFileRefCreator
+import urllib.request
+import zipfile
 
 __author__ = 'Tonio Fincke (Brockmann Consult GmbH)'
 
-PATH_TO_S2_L2_FILE = './test/test_data/S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+
+PATH_TO_S2_L2_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
 
 
 def test_s2l2_file_ref_creator_name():

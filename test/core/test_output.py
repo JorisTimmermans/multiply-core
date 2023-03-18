@@ -7,8 +7,20 @@ from multiply_core.observations import GeoTiffWriter
 import numpy as np
 import os
 from pytest import raises
+import urllib.request
+import zipfile
 
-GEOTIFF_WRITE_FOLDER = './test/test_data/geotiff'
+
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+
+GEOTIFF_WRITE_FOLDER = base_path + 'geotiff'
 GEO_TRANSFORM = (582414.9967658486, 120.0, 0.0, 4317096.927011872, 0.0, -120.0)
 PROJECTION = 'PROJCS["UTM Zone 30, Northern Hemisphere",GEOGCS["WGS 84",DATUM["WGS_1984",' \
              'SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],' \

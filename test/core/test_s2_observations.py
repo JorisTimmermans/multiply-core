@@ -9,12 +9,16 @@ except ImportError:
 from multiply_core.util import Reprojection, FileRef
 from multiply_core.observations import S2Observations, S2ObservationsCreator, extract_angles_from_metadata_file, \
     extract_tile_id
+import urllib.request
+import zipfile
 
-
-if os.path.exists('setup.py'):
-    base_path = 'test/test/test_data/'
-elif os.path.exists('test_data'):
-    base_path = 'test/test_data/'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
 
 
 S2_BASE_FILE = base_path + 'S2A_MSIL1C_20170605T105031_N0205_R051_T30SWJ_20170605T105303-ac'
