@@ -5,8 +5,7 @@ channels:
 
 dependencies:
   - python>=3.8
-  - gdal
-  - libgdal
+  - gdal=2.4
   - pyproj
   - pyyaml
   - numpy

@@ -10,7 +10,7 @@ jobs:
     strategy:
       max-parallel: 5
       matrix:
-        gdal_version: [2.4, 3.0, 3.4 , 3.6]
+        environment_file: [environment-2.4.yml,environment-3.0.yml,environment-3.4.yml,environment-3.6.yml,environment.yml]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +24,7 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
       run: |
-        conda env update --file environment.yml --name base
+        conda env update --file ${{ matrix.environment_file }} --name base
     - name: Lint with flake8
       run: |
         conda install flake8
@@ -34,6 +34,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        conda install gdal=${{ matrix.gdal_version }}
         conda install pytest
         pytest
