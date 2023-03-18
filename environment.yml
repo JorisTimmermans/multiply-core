@@ -11,7 +11,13 @@ dependencies:
   - numpy
   - scipy
   - setuptools
-  - shapely
+  - gcc=12.1.0
+  - cxx-compiler
+  - libgcc=5.2.0
+  - lazrs-python
+  - laspy
+  - plyfile
+  - pyshp
   - pip
   - pip:
       - -r requirements.txt
