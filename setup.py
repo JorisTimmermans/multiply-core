@@ -19,6 +19,7 @@ __version__ = None
 with open('multiply_core/version.py') as f:
     exec(f.read())
 
+
 setup_args = dict(name='multiply-core',
                   packages=setuptools.find_packages(),
                   include_package_data = True,
