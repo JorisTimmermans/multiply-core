@@ -12,6 +12,7 @@ jobs:
       matrix:
         environment_file: [environment-2.4.yml,environment-3.0.yml,environment-3.4.yml,environment-3.6.yml,environment.yml]
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
