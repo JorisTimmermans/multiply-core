@@ -27,6 +27,7 @@ jobs:
       run: |
         conda env update --file ${{ matrix.environment_file }} --name base
 
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
