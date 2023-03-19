@@ -21,6 +21,7 @@ dependencies:
   - shapely
   - pyshp
   - pytest
+  - flake8
   - pip
   - pip:
       - .

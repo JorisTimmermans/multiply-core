@@ -7,28 +7,19 @@ on:
 
 jobs:
   build:
-    strategy:
-      max-parallel: 5
-      matrix:
-        environment_file: [environment.yml]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Install Conda environment from environment.yml
-        uses: mamba-org/provision-with-micromamba@main
+      - name: Cache conda
+        uses: actions/cache@v3
+        env:
+          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
         with:
-          environment-file:  ${{ matrix.environment_file }}
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{hashFiles('environment.yml') }}
 
-
-      - name: Lint with flake8
-        run: |
-          micromamba install -c conda-forge flake8
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
-        run: |
-          micromamba install -c conda-forge pytest
-          pytest
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
