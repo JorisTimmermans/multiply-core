@@ -23,6 +23,7 @@ with open('multiply_core/version.py') as f:
 setup_args = dict(name='multiply-core',
                   packages=setuptools.find_packages(),
                   include_package_data = True,
+                  package_data={'': ['variables/default_variables_library.yaml']},
                   version=__version__,
                   description='MULTIPLY Core',
                   author='MULTIPLY Team',
