@@ -10,7 +10,6 @@ from pytest import raises
 import urllib.request
 import zipfile
 
-
 test_data_save_path = '/tmp/test_data.zip'
 if not os.path.exists(test_data_save_path):
     urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)

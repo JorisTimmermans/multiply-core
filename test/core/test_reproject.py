@@ -168,3 +168,9 @@ def test_get_num_tiles():
     num_x_tiles, num_y_tiles = reproject.get_num_tiles(spatial_resolution=120, roi=roi, tile_width=5, tile_height=5)
     assert 21 == num_x_tiles
     assert 16 == num_y_tiles
+
+
+def test_spatial_reference():
+    wgs84_srs = osr.SpatialReference()
+    imported = wgs84_srs.ImportFromEPSG(4326)
+    assert 0 == imported
