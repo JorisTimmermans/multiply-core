@@ -654,12 +654,15 @@ class AsterValidator(DataValidator):
             return False
         min_lon, min_lat, max_lon, max_lat = roi.bounds
         end_of_path = _get_end_of_path(path)
-        path_lat_id = end_of_path[8:9]
-        path_lat = float(end_of_path[9:11])
+        roistr = end_of_path.split('_')[1]
+        
+        
+        path_lat_id = roistr[0:1]
+        path_lat = float(roistr[1:3])
         if path_lat_id == 'S':
             path_lat *= -1
-        path_lon_id = end_of_path[11:12]
-        path_lon = float(end_of_path[12:15])
+        path_lon_id = roistr[3:4]
+        path_lon = float(roistr[4:7])
         if path_lon_id == 'W':
             path_lon *= -1
         if min_lon > path_lon + 1 or max_lon < path_lon or min_lat > path_lat + 1 or max_lat < path_lat:
