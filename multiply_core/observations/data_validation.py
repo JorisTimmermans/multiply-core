@@ -633,7 +633,7 @@ class WVEmulatorValidator(DataValidator):
 class AsterValidator(DataValidator):
 
     def __init__(self):
-        self.ASTER_NAME_PATTERN = 'ASTGTM2_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif'
+        self.ASTER_NAME_PATTERN = 'ASTGTM(2|V003)_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif'
         self.ASTER_NAME_MATCHER = re.compile(self.ASTER_NAME_PATTERN)
 
     def name(self) -> str:
