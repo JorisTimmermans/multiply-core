@@ -474,7 +474,14 @@ class CamsTiffValidator(DataValidator):
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_omaod550.tif',
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_suaod550.tif',
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_tcwv.tif']
-        self._expected_file_matchers = [re.compile(pattern) for pattern in self._expected_file_patterns]
+        self._expected_file_patterns_old = ['20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_aod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_bcaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_duaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_gtco3_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_omaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_suaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_tcwv_old.tif']
+        self._expected_file_matchers = [re.compile(pattern) for pattern in self._expected_file_patterns]  + [re.compile(pattern) for pattern in self._expected_file_patterns_old]
 
     def name(self) -> str:
         return DataTypeConstants.CAMS_TIFF
