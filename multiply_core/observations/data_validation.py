@@ -474,7 +474,14 @@ class CamsTiffValidator(DataValidator):
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_omaod550.tif',
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_suaod550.tif',
                                         '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_tcwv.tif']
-        self._expected_file_matchers = [re.compile(pattern) for pattern in self._expected_file_patterns]
+        self._expected_file_patterns_old = ['20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_aod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_bcaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_duaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_gtco3_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_omaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_suaod550_old.tif',
+                                        '20[0-9][0-9]_[0-1][0-9]_[0-3][0-9]_tcwv_old.tif']
+        self._expected_file_matchers = [re.compile(pattern) for pattern in self._expected_file_patterns]  + [re.compile(pattern) for pattern in self._expected_file_patterns_old]
 
     def name(self) -> str:
         return DataTypeConstants.CAMS_TIFF
@@ -633,7 +640,7 @@ class WVEmulatorValidator(DataValidator):
 class AsterValidator(DataValidator):
 
     def __init__(self):
-        self.ASTER_NAME_PATTERN = 'ASTGTM2_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif'
+        self.ASTER_NAME_PATTERN = 'ASTGTM(2|V003)_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif'
         self.ASTER_NAME_MATCHER = re.compile(self.ASTER_NAME_PATTERN)
 
     def name(self) -> str:
@@ -654,12 +661,15 @@ class AsterValidator(DataValidator):
             return False
         min_lon, min_lat, max_lon, max_lat = roi.bounds
         end_of_path = _get_end_of_path(path)
-        path_lat_id = end_of_path[8:9]
-        path_lat = float(end_of_path[9:11])
+        roistr = end_of_path.split('_')[1]
+        
+        
+        path_lat_id = roistr[0:1]
+        path_lat = float(roistr[1:3])
         if path_lat_id == 'S':
             path_lat *= -1
-        path_lon_id = end_of_path[11:12]
-        path_lon = float(end_of_path[12:15])
+        path_lon_id = roistr[3:4]
+        path_lon = float(roistr[4:7])
         if path_lon_id == 'W':
             path_lon *= -1
         if min_lon > path_lon + 1 or max_lon < path_lon or min_lat > path_lat + 1 or max_lat < path_lat:
