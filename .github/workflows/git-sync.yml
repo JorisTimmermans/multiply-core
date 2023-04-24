@@ -18,7 +18,7 @@ jobs:
       run: |
         if ! git diff --quiet upstream/master; then
           git checkout -b sync-with-upstream
-          git merge upstream/main --no-edit
+          git merge upstream/master --no-edit
           git push origin sync-with-upstream
         else
           echo "No changes from upstream. Skipping sync."
@@ -32,4 +32,4 @@ jobs:
         title: "Sync with upstream"
         branch: "sync-with-upstream"
         body: "This pull request syncs with the upstream repository."
-      if: "!git diff --quiet upstream/main"
+      if: "!git diff --quiet upstream/master"
