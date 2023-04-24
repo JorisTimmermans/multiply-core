@@ -402,7 +402,7 @@ def test_aster_is_valid():
 def test_aster_get_file_pattern():
     validator = AsterValidator()
 
-    assert 'ASTGTM2_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif' == validator.get_file_pattern()
+    assert 'ASTGTM(2|V003)_[N|S][0-8][0-9][E|W][0|1][0-9][0-9]_dem.tif' == validator.get_file_pattern()
 
 
 def test_aster_is_valid_for():
