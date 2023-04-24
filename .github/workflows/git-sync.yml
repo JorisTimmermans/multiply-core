@@ -1,7 +1,7 @@
 name: Sync with Original Repo
 on:
   schedule:
-  - cron:  "*/15 * * * *"
+  - cron:  "0 0 * * Sun"
 
 jobs:
   sync:
