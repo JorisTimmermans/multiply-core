@@ -4,6 +4,8 @@ on:
   schedule:
   - cron:  "0 0 * * Sun"
 
+
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -13,7 +15,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Fetch upstream
-      run: git fetch upstream
+      run: |
+        git remote add upstream https://github.com/JorisTimmermans/multiply-core.git
+        git fetch upstream
 
     - name: Check if there are changes
       id: has_changes
