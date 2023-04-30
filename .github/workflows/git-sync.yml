@@ -14,6 +14,10 @@ jobs:
     - name: Fetch upstream
       run: git fetch upstream
 
+    - name: Check if there are changes
+      id: has_changes
+      run: echo "::set-output name=changed::$(git rev-parse HEAD != upstream/master)"
+
     - name: Check for changes
       run: |
         if ! git diff --quiet upstream/master; then
@@ -32,4 +36,4 @@ jobs:
         title: "Sync with upstream"
         branch: "sync-with-upstream"
         body: "This pull request syncs with the upstream repository."
-      if: "!git diff --quiet upstream/master"
+      if: steps.has_changes.outputs.changed == 'true'
