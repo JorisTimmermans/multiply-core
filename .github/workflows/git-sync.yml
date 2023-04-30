@@ -1,6 +1,7 @@
 name: Sync with Original Repo
 on:
   schedule:
+  push:
   - cron:  "0 0 * * Sun"
 
 jobs:
