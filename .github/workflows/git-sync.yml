@@ -23,22 +23,22 @@ jobs:
       id: has_changes
       run: echo "::set-output name=changed::$(git rev-parse HEAD != upstream/master)"
 
-    - name: Check for changes
+    - name: Create new branch
       run: |
-        if ! git diff --quiet upstream/master; then
-          git checkout -b sync-with-upstream
-          git merge upstream/master --no-edit
-          git push origin sync-with-upstream
-        else
-          echo "No changes from upstream. Skipping sync."
-        fi
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: "Sync with upstream"
-        title: "Sync with upstream"
-        branch: "sync-with-upstream"
-        body: "This pull request syncs with the upstream repository."
+        git checkout -b update-upstream-${{ github.run_number }}
       if: steps.has_changes.outputs.changed == 'true'
+      
+    - name: Merge upstream changes
+      run: |
+        git merge upstream/master --no-edit
+      if: steps.has_changes.outputs.changed == 'true'
+
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v3
+      if: steps.has_changes.outputs.changed == 'true'
+      with:
+        title: 'Update from upstream repository'
+        commit-message: 'Merge latest changes from upstream repository'
+        branch: 'update-upstream'
+        base: 'master'
+        delete-branch: true
