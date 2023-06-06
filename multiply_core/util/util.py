@@ -128,6 +128,7 @@ def get_time_from_string(time_string: str, adjust_to_last_day: bool = False) -> 
                            ("%Y-%m-%dT%H:%M:%S.%f", timedelta(), False),
                            ("%Y-%m-%dT%H:%M:%SZ", timedelta(), False),
                            ("%Y-%m-%dT%H:%M:%S", timedelta(), False),
+                           ("%Y-%m-%dT%H:%M", timedelta(), False),
                            ("%Y-%m-%d %H:%M:%S", timedelta(), False),
                            ("%Y-%m-%d", timedelta(hours=24, seconds=-1), False),
                            ("%Y-%m", timedelta(), True),
