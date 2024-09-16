@@ -7,10 +7,20 @@ from multiply_core.util import FileRef, Reprojection, get_time_from_string
 from multiply_core.observations import ObservationData, ProductObservations, ProductObservationsCreator, \
     ObservationsFactory
 from typing import Optional, Union, List
+import urllib.request
+import zipfile
 
 __author__ = "Tonio Fincke (Brockmann Consult GmbH)"
 
-DUMMY_FILE = './test/test_data/dfghztm_2018_dvfgbh'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+DUMMY_FILE = base_path + 'dfghztm_2018_dvfgbh'
 
 
 def test_sort_file_ref_list():
@@ -30,10 +40,9 @@ def test_sort_file_ref_list():
 
 
 def test_create_observations():
-
     class DummyObservations(ProductObservations):
 
-        def read_granule(self) -> (List[np.array], np.array, np.float, np.float, np.float, List[np.array]):
+        def read_granule(self) -> (List[np.array], np.array, float, float, float, List[np.array]):
             return [np.array([0.5])], np.array([0.4]), 0.3, 0.2, 0.1, [np.array([0.6])]
 
         def get_band_data_by_name(self, band_name: str, retrieve_uncertainty: bool = True) -> ObservationData:
@@ -55,7 +64,6 @@ def test_create_observations():
         def set_no_data_value(self, band: Union[str, int], no_data_value: float):
             pass
 
-
     class DummyObservationsCreator(ProductObservationsCreator):
         DUMMY_PATTERN = 'dfghztm_[0-9]{4}_dvfgbh'
         DUMMY_PATTERN_MATCHER = re.compile('dfghztm_[0-9]{4}_dvfgbh')
@@ -71,6 +79,7 @@ def test_create_observations():
                                 emulator_folder: Optional[str]) -> ProductObservations:
             if cls.can_read(file_refs):
                 return DummyObservations()
+
     observations_factory = ObservationsFactory()
     observations_factory.add_observations_creator_to_registry(DummyObservationsCreator())
 

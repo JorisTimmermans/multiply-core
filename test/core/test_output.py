@@ -1,10 +1,25 @@
-import gdal
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal
+
 from multiply_core.observations import GeoTiffWriter
 import numpy as np
 import os
 from pytest import raises
+import urllib.request
+import zipfile
 
-GEOTIFF_WRITE_FOLDER = './test/test_data/geotiff'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+
+GEOTIFF_WRITE_FOLDER = base_path + 'geotiff'
 GEO_TRANSFORM = (582414.9967658486, 120.0, 0.0, 4317096.927011872, 0.0, -120.0)
 PROJECTION = 'PROJCS["UTM Zone 30, Northern Hemisphere",GEOGCS["WGS 84",DATUM["WGS_1984",' \
              'SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],' \
@@ -33,7 +48,7 @@ def test_geotiff_writer_create():
 
 
 def test_geotiff_writer_create_invalid_num_bands():
-    with raises(ValueError, message='List with number of bands must be of same size as list of file names'):
+    with raises(ValueError) as info:
         file_names = [os.path.abspath('{}/name21.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name22.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name23.tif'.format(GEOTIFF_WRITE_FOLDER)),
@@ -52,7 +67,7 @@ def test_geotiff_writer_create_invalid_num_bands():
 
 
 def test_geotiff_writer_create_invalid_data_types():
-    with raises(ValueError, message='Data Type dgfvbgf not supported.'):
+    with raises(ValueError):
         file_names = [os.path.abspath('{}/name31.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name32.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name33.tif'.format(GEOTIFF_WRITE_FOLDER)),
@@ -70,7 +85,7 @@ def test_geotiff_writer_create_invalid_data_types():
 
 
 def test_geotiff_writer_create_invalid_number_of_data_types():
-    with raises(ValueError, message='List with data types must be of same size as list of file names'):
+    with raises(ValueError):
         file_names = [os.path.abspath('{}/name41.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name42.tif'.format(GEOTIFF_WRITE_FOLDER)),
                       os.path.abspath('{}/name43.tif'.format(GEOTIFF_WRITE_FOLDER)),

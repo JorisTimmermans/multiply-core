@@ -5,11 +5,20 @@ from multiply_core.util.aux_data_provision import AuxDataProvider, DefaultAuxDat
     DefaultAuxDataProviderCreator, _get_aux_data_provider, _add_aux_data_provider, _set_up_aux_data_provider_registry, \
     AuxDataProviderCreator
 
+import urllib.request
+import zipfile
 
 __author__ = 'Tonio Fincke (Brockmann Consult GmbH)'
 
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
 
-TEST_DATA_PATH = './test/test_data/2018_10_23/'
+TEST_DATA_PATH = base_path + '2018_10_23/'
 
 
 def test_name():
@@ -22,42 +31,42 @@ def test_list_elements():
     provider = DefaultAuxDataProvider({})
     elements = provider.list_elements(TEST_DATA_PATH, return_absolute_paths=False)
     assert 6 == len(elements)
-    assert './test/test_data/2018_10_23\\2018_10_23_aod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_aod550.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_bcaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_bcaod550.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_duaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_duaod550.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_gtco3.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_gtco3.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_omaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_omaod550.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_suaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_suaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_aod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_aod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_bcaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_bcaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_duaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_duaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_gtco3.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_gtco3.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_omaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_omaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_suaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_suaod550.tif' in elements
 
 
 def test_list_elements_with_pattern():
     provider = DefaultAuxDataProvider({})
     elements = provider.list_elements(TEST_DATA_PATH, '*uaod*.tif', return_absolute_paths=False)
     assert 2 == len(elements)
-    assert './test/test_data/2018_10_23\\2018_10_23_duaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_duaod550.tif' in elements
-    assert './test/test_data/2018_10_23\\2018_10_23_suaod550.tif' in elements \
-           or './test/test_data/2018_10_23/2018_10_23_suaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_duaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_duaod550.tif' in elements
+    assert base_path + '2018_10_23\\2018_10_23_suaod550.tif' in elements \
+           or base_path + '2018_10_23/2018_10_23_suaod550.tif' in elements
 
 
 def test_assure_element_provided():
     provider = DefaultAuxDataProvider({})
-    provided = provider.assure_element_provided('./test/test_data/2018_10_23/2018_10_23_duaod550.tif')
+    provided = provider.assure_element_provided(base_path + '2018_10_23/2018_10_23_duaod550.tif')
     assert provided
-    assert os.path.exists('./test/test_data/2018_10_23/2018_10_23_duaod550.tif')
+    assert os.path.exists(base_path + '2018_10_23/2018_10_23_duaod550.tif')
 
 
 def test_assure_element_provided_not():
     provider = DefaultAuxDataProvider({})
-    provided = provider.assure_element_provided('./test/test_data/2018_10_23\\2018_10_23_dumaod550.tif')
+    provided = provider.assure_element_provided(base_path + '2018_10_23\\2018_10_23_dumaod550.tif')
     assert not provided
-    assert not os.path.exists('./test/test_data/2018_10_23\\2018_10_23_dumaod550.tif')
+    assert not os.path.exists(base_path + '2018_10_23\\2018_10_23_dumaod550.tif')
 
 
 def test_default_aux_data_provider_creator_name():
@@ -105,7 +114,7 @@ def test_get_aux_data_provider_dummy():
 
     _set_up_aux_data_provider_registry()
     _add_aux_data_provider(DummyAuxDataProviderCreator())
-    provider = _get_aux_data_provider('./test/test_data/aux_data_provider.json')
+    provider = _get_aux_data_provider(base_path + 'aux_data_provider.json')
 
     assert provider is not None
     assert 'DUMMY' == provider.name()

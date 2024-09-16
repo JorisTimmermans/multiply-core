@@ -1,8 +1,7 @@
 <img alt="MULTIPLY" align="right" src="https://raw.githubusercontent.com/multiply-org/multiply-core/master/doc/source/_static/logo/Multiply_multicolour.png" />
 
 
-[![Build Status](https://travis-ci.org/multiply-org/multiply-core.svg?branch=master)](https://travis-ci.org/multiply-org/multiply-core)
-[![Documentation Status](https://readthedocs.org/projects/multiply/badge/?version=latest)](http://multiply.readthedocs.io/en/latest/?badge=latest)
+[![Python Package using Conda](https://github.com/QCDIS/multiply-core/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/QCDIS/multiply-core/actions/workflows/python-package-conda.yml)
                 
 # MULTIPLY Core
 

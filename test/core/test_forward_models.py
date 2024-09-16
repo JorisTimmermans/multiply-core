@@ -1,17 +1,31 @@
 import os
 
 from multiply_core.models.forward_models import _get_forward_models, _read_forward_model, _register_forward_model
+import urllib.request
+import zipfile
+import tempfile
 
-PATH_TO_A_FORWARD_MODEL_REGISTRY_FILE = './test/test_data/a_forward_model_registry.txt'
-PATH_TO_A_FORWARD_MODEL_METADATA_FILE = './test/test_data/metadata.json'
-PATH_TO_ANOTHER_FORWARD_MODEL_METADATA_FILE = './test/test_data/another_meta_data.json'
-PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE = './test/test_data/another_forward_model_registry.txt'
+test_data_save_path = '/tmp/test_data.zip'
+if not os.path.exists(test_data_save_path):
+    urllib.request.urlretrieve('https://github.com/QCDIS/multiply-core/raw/master/test/test_data.zip', test_data_save_path)
+    with zipfile.ZipFile(test_data_save_path, 'r') as zip_ref:
+        zip_ref.extractall('/tmp')
+    zip_ref.close()
+base_path = '/tmp/test_data/'
+
+PATH_TO_A_FORWARD_MODEL_REGISTRY_FILE = base_path + 'a_forward_model_registry.txt'
+assert os.path.exists(PATH_TO_A_FORWARD_MODEL_REGISTRY_FILE)
+PATH_TO_A_FORWARD_MODEL_METADATA_FILE = base_path + 'metadata.json'
+assert os.path.exists(PATH_TO_A_FORWARD_MODEL_METADATA_FILE)
+PATH_TO_ANOTHER_FORWARD_MODEL_METADATA_FILE = base_path + 'another_meta_data.json'
+assert os.path.exists(PATH_TO_ANOTHER_FORWARD_MODEL_METADATA_FILE)
+PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE = base_path + 'another_forward_model_registry.txt'
 
 
 def test_read_forward_model():
     forward_model = _read_forward_model(PATH_TO_A_FORWARD_MODEL_METADATA_FILE)
 
-    assert forward_model.model_dir.endswith('/test/test_data')
+    assert forward_model.model_dir.endswith(base_path[:-1])
     assert 's2_prosail' == forward_model.id
     assert 'PROSAIL for Sentinel-2' == forward_model.name
     assert 'Coupling of PROSPECT leaf optical properties model and SAIL canopy bidirectional reflectance model. ' \
@@ -35,9 +49,8 @@ def test_read_forward_model():
 
 def test_get_forward_models():
     forward_models = _get_forward_models(PATH_TO_A_FORWARD_MODEL_REGISTRY_FILE)
-
     assert 1 == len(forward_models)
-    assert forward_models[0].model_dir.endswith('/test/test_data')
+    assert forward_models[0].model_dir.endswith(base_path[:-1])
     assert 's2_prosail' == forward_models[0].id
     assert 'PROSAIL for Sentinel-2' == forward_models[0].name
     assert 'Coupling of PROSPECT leaf optical properties model and SAIL canopy bidirectional reflectance model. ' \
@@ -60,13 +73,14 @@ def test_get_forward_models():
 
 def test_register_forward_model():
     try:
-        _register_forward_model(PATH_TO_ANOTHER_FORWARD_MODEL_METADATA_FILE, PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE)
+        _register_forward_model(PATH_TO_ANOTHER_FORWARD_MODEL_METADATA_FILE,
+                                PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE)
         _register_forward_model(PATH_TO_A_FORWARD_MODEL_METADATA_FILE, PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE)
 
         forward_models = _get_forward_models(PATH_TO_ANOTHER_FORWARD_MODEL_REGISTRY_FILE)
 
         assert 2 == len(forward_models)
-        assert forward_models[0].model_dir.endswith('/test/test_data')
+        assert forward_models[0].model_dir.endswith(base_path[:-1])
         assert 'another_model' == forward_models[0].id
         assert 'Another model for a made up data type' == forward_models[0].name
         assert 'No words. No words.' == forward_models[0].description
@@ -83,7 +97,7 @@ def test_register_forward_model():
         expected_required_priors = ["fzeghjkg", "fguhj", "ufxdfhrt"]
         assert all([a == b for a, b in zip(forward_models[0].required_priors, expected_required_priors)])
 
-        assert forward_models[1].model_dir.endswith('/test/test_data')
+        assert forward_models[1].model_dir.endswith(base_path[:-1])
         assert 's2_prosail' == forward_models[1].id
         assert 'PROSAIL for Sentinel-2' == forward_models[1].name
         assert 'Coupling of PROSPECT leaf optical properties model and SAIL canopy bidirectional reflectance model. ' \
